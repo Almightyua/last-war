@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App для Last War</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+        body {
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+            margin: 0;
+            background: linear-gradient(135deg, #1A1E1F 0%, #2E2E2E 100%);
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAIAAAAmkwkpAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAPUlEQVQImQHiADr/AJ2bm////wCZl5cAn5+fALu7uwC8vLwA3d3dAJmZlwD///8A7+/vAP///wCZmZkA3d3dAKSU0v4AAAAASUVORK5CYII=');
+            color: #B0BEC5;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 20%;
+            background: #2E7D32;
+            padding: 15px;
+            box-sizing: border-box;
+            border-right: 3px solid #B0BEC5;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+        .main-content {
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sidebar h3 {
+            font-family: 'Oswald', sans-serif;
+            color: #B0BEC5;
+            margin-top: 0;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
+            font-size: 24px;
+        }
+        button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 12px;
+            background: linear-gradient(180deg, #4CAF50 0%, #388E3C 100%);
+            color: #E0E0E0;
+            border: 2px solid #B0BEC5;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            text-transform: uppercase;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
+        button:hover {
+            background: linear-gradient(180deg, #D32F2F 0%, #B71C1C 100%);
+            border-color: #D32F2F;
+        }
+        button.active {
+            background: linear-gradient(180deg, #2E7D32 0%, #1B5E20 100%);
+            border-color: #4CAF50;
+        }
+        button svg {
+            margin-right: 12px;
+        }
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: #4CAF50;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
+            font-size: 28px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #B0BEC5;
+            font-size: 16px;
+        }
+        #focus-content {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #B0BEC5;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        #focus-content h3 {
+            font-family: 'Oswald', sans-serif;
+            color: #4CAF50;
+            text-transform: uppercase;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Дні тижня</h3>
+            <button onclick="showFocus('monday')" id="monday-btn" class="active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z"/>
+                </svg>
+                Понеділок
+            </button>
+            <button onclick="showFocus('tuesday')" id="tuesday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-1-12h2v4h4v2h-4v4h-2v-4H7v-2h4V8z"/>
+                </svg>
+                Вівторок
+            </button>
+            <button onclick="showFocus('wednesday')" id="wednesday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10l2-2 2 2 2-2 2 2-2 2-2 2-2-2-2 2-2-2 2-2z"/>
+                </svg>
+                Середа
+            </button>
+            <button onclick="showFocus('thursday')" id="thursday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v2h2v2h-2v2h-4v-2H8v-2h2v-2z"/>
+                </svg>
+                Четвер
+            </button>
+            <button onclick="showFocus('friday')" id="friday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10l2-2 2 2 2-2v4H8v-4z"/>
+                </svg>
+                П'ятниця
+            </button>
+            <button onclick="showFocus('saturday')" id="saturday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v4h2v2h-2v2H8v-2h2v-2H8v-2h2v-2z"/>
+                </svg>
+                Субота
+            </button>
+            <button onclick="showFocus('sunday')" id="sunday-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h2v2h2v2h-2v2h-2v-2H8v-2h2v-2z"/>
+                </svg>
+                Неділя
+            </button>
+        </div>
+        <div class="main-content">
+            <h2>Щоденний фокус</h2>
+            <div id="focus-content">
+                <h3>День 1 - Радарна підготовка</h3>
+                <ul>
+                    <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                    <li>Збираємо ресурси на карті</li>
+                    <li>Використовуємо досвід героя для дейліку</li>
+                    <li>Виконуємо завдання радару</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+
+        function showFocus(day) {
+            const focusContent = document.getElementById('focus-content');
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(day + '-btn').classList.add('active');
+
+            let focusHTML = '';
+            switch (day) {
+                case 'monday':
+                    focusHTML = `
+                        <h3>День 1 - Радарна підготовка</h3>
+                        <ul>
+                            <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                            <li>Збираємо ресурси на карті</li>
+                            <li>Використовуємо досвід героя для дейліку</li>
+                            <li>Виконуємо завдання радару</li>
+                        </ul>
+                    `;
+                    break;
+                case 'tuesday':
+                    focusHTML = `
+                        <h3>День будівництва</h3>
+                        <ul>
+                            <li>Закінчуємо будівництво будівель, розпаковуємо пакунки будівель, які протягом тижня будували. Рекомендую поєднати з щоденним завданням.</li>
+                            <li>Наймаємо виживших у таверні</li>
+                            <li>Готуємо радар для середи: Виконуємо завдання радару, але не забираємо (Залишаємо з червоною крапкою). Також рекомендую, щоб на 22:00 у вас було приблизно 25 завдань на радарі в лівому куточку висіло.</li>
+                            <li>Використовуємо по максимуму прискорення будівництва. Рекомендую також стати на міністра будівництва і в цей період швиденько побудуватися.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'wednesday':
+                    focusHTML = `
+                        <h3>Середа: Бої</h3>
+                        <ul>
+                            <li>Атака інших баз</li>
+                        </ul>
+                    `;
+                    break;
+                case 'thursday':
+                    focusHTML = `
+                        <h3>Четвер: Альянсні активності</h3>
+                        <ul>
+                            <li>Донати та запити в альянсі</li>
+                            <li>Участь у альянсних подіях</li>
+                        </ul>
+                    `;
+                    break;
+                case 'friday':
+                    focusHTML = `
+                        <h3>П'ятниця: Підготовка до подій</h3>
+                        <ul>
+                            <li>Перевірка Event Hub на upcoming події</li>
+                            <li>Підготовка ресурсів та військ для подій</li>
+                        </ul>
+                    `;
+                    break;
+                case 'saturday':
+                    focusHTML = `
+                        <h3>Субота: Оновлення бази</h3>
+                        <ul>
+                            <li>Оновлення будівель</li>
+                            <li>Дослідження нових технологій</li>
+                        </ul>
+                    `;
+                    break;
+                case 'sunday':
+                    focusHTML = `
+                        <h3>Неділя: Відпочинок та планування</h3>
+                        <ul>
+                            <li>Перегляд прогресу</li>
+                            <li>Планування на наступний тиждень</li>
+                        </ul>
+                    `;
+                    break;
+            }
+            focusContent.innerHTML = focusHTML;
+        }
+    </script>
+</body>
+</html>
