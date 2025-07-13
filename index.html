@@ -106,6 +106,19 @@
             margin: 0 0 0.75rem;
             font-size: 1.25rem;
         }
+        .day-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .day-buttons button {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            min-height: 44px;
+            min-width: 80px;
+            text-align: center;
+        }
         @media (max-width: 600px) {
             .container {
                 flex-direction: column;
@@ -140,6 +153,13 @@
             li {
                 font-size: 0.85rem;
             }
+            .day-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                overflow-x: auto;
+            }
+            .day-buttons button {
+                min-width: 70px;
+            }
         }
         @media (max-width: 400px) {
             .sidebar h3 {
@@ -158,78 +178,117 @@
             li {
                 font-size: 0.8rem;
             }
+            .day-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .day-buttons button {
+                min-width: 60px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-            <h3>Дні тижня</h3>
-            <button onclick="showFocus('monday')" id="monday-btn" class="active">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm0-14a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>
-                </svg>
-                Понеділок
-            </button>
-            <button onclick="showFocus('tuesday')" id="tuesday-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v8h-4v-8z"/>
-                </svg>
-                Вівторок
-            </button>
-            <button onclick="showFocus('wednesday')" id="wednesday-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10l2-2 2 2 2-2 2 2-2 2-2 2-2-2-2 2-2-2 2-2z"/>
-                </svg>
-                Середа
-            </button>
-            <button onclick="showFocus('thursday')" id="thursday-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v2h2v2h-2v2h-4v-2H8v-2h2v-2z"/>
-                </svg>
-                Четвер
-            </button>
-            <button onclick="showFocus('friday')" id="friday-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10l2-2 2 2 2-2v4H8v-4z"/>
-                </svg>
-                П'ятниця
-            </button>
-            <button onclick="showFocus('saturday')" id="saturday-btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v4h2v2h-2v2H8v-2h2v-2H8v-2h2v-2z"/>
-                </svg>
-                Субота
-            </button>
-            <button onclick="showFocus('sunday')" id="sunday-btn">
+            <h3>Меню</h3>
+            <button onclick="showSection('daily')" id="daily-btn" class="active">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
                     <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h2v2h2v2h-2v2h-2v-2H8v-2h2v-2z"/>
                 </svg>
-                Неділя
+                Щоденні завдання
+            </button>
+            <button onclick="showSection('raid')" id="raid-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v6h2v2h-6v-2h2v-4h-2v-2z"/>
+                </svg>
+                Грабіж
+            </button>
+            <button onclick="showSection('secrets')" id="secrets-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm0-12a4 4 0 0 0-4 4h2a2 2 0 0 1 2-2v2h2v-2a4 4 0 0 0-2-3.464V8z"/>
+                </svg>
+                Секрети
             </button>
         </div>
         <div class="main-content">
             <h2>Щоденний фокус</h2>
             <div id="focus-content">
-                <h3>День 1 - Радарна підготовка</h3>
-                <ul>
-                    <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
-                    <li>Збираємо ресурси на карті</li>
-                    <li>Використовуємо досвід героя для дейліку</li>
-                    <li>Виконуємо завдання радару</li>
-                </ul>
+                <div class="day-buttons">
+                    <button onclick="showFocus('monday')" id="monday-btn" class="active">Пн</button>
+                    <button onclick="showFocus('tuesday')" id="tuesday-btn">Вт</button>
+                    <button onclick="showFocus('wednesday')" id="wednesday-btn">Ср</button>
+                    <button onclick="showFocus('thursday')" id="thursday-btn">Чт</button>
+                    <button onclick="showFocus('friday')" id="friday-btn">Пт</button>
+                    <button onclick="showFocus('saturday')" id="saturday-btn">Сб</button>
+                    <button onclick="showFocus('sunday')" id="sunday-btn">Нд</button>
+                </div>
+                <div id="day-content">
+                    <h3>День 1 - Радарна підготовка</h3>
+                    <ul>
+                        <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                        <li>Збираємо ресурси на карті</li>
+                        <li>Використовуємо досвід героя для дейліку</li>
+                        <li>Виконуємо завдання радару</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand(); // Розгортаємо Web App на весь екран
+        tg.expand();
 
-        function showFocus(day) {
+        function showSection(section) {
             const focusContent = document.getElementById('focus-content');
             const buttons = document.querySelectorAll('.sidebar button');
             buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(section + '-btn').classList.add('active');
+
+            let contentHTML = '';
+            switch (section) {
+                case 'daily':
+                    contentHTML = `
+                        <div class="day-buttons">
+                            <button onclick="showFocus('monday')" id="monday-btn" class="active">Пн</button>
+                            <button onclick="showFocus('tuesday')" id="tuesday-btn">Вт</button>
+                            <button onclick="showFocus('wednesday')" id="wednesday-btn">Ср</button>
+                            <button onclick="showFocus('thursday')" id="thursday-btn">Чт</button>
+                            <button onclick="showFocus('friday')" id="friday-btn">Пт</button>
+                            <button onclick="showFocus('saturday')" id="saturday-btn">Сб</button>
+                            <button onclick="showFocus('sunday')" id="sunday-btn">Нд</button>
+                        </div>
+                        <div id="day-content">
+                            <h3>День 1 - Радарна підготовка</h3>
+                            <ul>
+                                <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                                <li>Збираємо ресурси на карті</li>
+                                <li>Використовуємо досвід героя для дейліку</li>
+                                <li>Виконуємо завдання радару</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'raid':
+                    contentHTML = `
+                        <h3>Грабіж</h3>
+                        <p>Плануйте атаки на ресурси інших гравців. Деталі скоро будуть додані.</p>
+                    `;
+                    break;
+                case 'secrets':
+                    contentHTML = `
+                        <h3>Секрети</h3>
+                        <p>Дізнайтесь приховані стратегії та поради для гри. Деталі скоро будуть додані.</p>
+                    `;
+                    break;
+            }
+            focusContent.innerHTML = contentHTML;
+        }
+
+        function showFocus(day) {
+            const dayContent = document.getElementById('day-content');
+            const dayButtons = document.querySelectorAll('.day-buttons button');
+            dayButtons.forEach(btn => btn.classList.remove('active'));
             document.getElementById(day + '-btn').classList.add('active');
 
             let focusHTML = '';
@@ -301,7 +360,7 @@
                     `;
                     break;
             }
-            focusContent.innerHTML = focusHTML;
+            dayContent.innerHTML = focusHTML;
         }
     </script>
 </body>
