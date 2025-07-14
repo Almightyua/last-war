@@ -121,6 +121,45 @@
             border: 2px solid #B0BEC5;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 2px solid #B0BEC5;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(180deg, #D32F2F 0%, #B71C1C 100%);
+            border: 2px solid #B0BEC5;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .close-button svg {
+            width: 24px;
+            height: 24px;
         }
         .day-buttons {
             display: grid;
@@ -256,6 +295,14 @@
             </div>
         </div>
     </div>
+    <div id="image-modal" class="modal">
+        <span id="close-modal" class="close-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#E0E0E0">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#E0E0E0" stroke-width="2"/>
+            </svg>
+        </span>
+        <img id="modal-image" src="" alt="Повноекранне зображення">
+    </div>
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
@@ -303,7 +350,7 @@
                             <li>Натискайте "ограбити"</li>
                             <li>Ууаа, ви на чужому сервері і можете там грабувати секретні завдання та вантажівки!</li>
                         </ul>
-                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів">
+                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів" onclick="openModal(this.src)">
                     `;
                     break;
                 case 'secrets':
@@ -318,7 +365,7 @@
                             <li>Натискайте "ограбити"</li>
                             <li>Ууаа, ви на чужому сервері і можете там грабувати секретні завдання та вантажівки!</li>
                         </ul>
-                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів">
+                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів" onclick="openModal(this.src)">
                     `;
                     break;
             }
@@ -409,6 +456,20 @@
             }
             dayContent.innerHTML = focusHTML;
         }
+
+        function openModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = 'none';
+        }
+
+        document.getElementById('close-modal').addEventListener('click', closeModal);
     </script>
 </body>
 </html>
