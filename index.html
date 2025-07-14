@@ -113,16 +113,11 @@
             margin: 0.75rem 0;
             font-size: 1rem;
         }
-        #focus-content .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        #focus-content .image-gallery img {
+        #focus-content img {
             max-width: 100%;
             height: auto;
             display: block;
+            margin-top: 1rem;
             border: 2px solid #B0BEC5;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -223,9 +218,6 @@
             .day-buttons button {
                 min-width: 70px;
             }
-            #focus-content .image-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
         @media (max-width: 400px) {
             .sidebar h3 {
@@ -262,4 +254,222 @@
             <h3>Меню</h3>
             <button onclick="showSection('daily')" id="daily-btn" class="active">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
-                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h2v2h2v2h-2v2h-2v-2H8v-2h2
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h2v2h2v2h-2v2h-2v-2H8v-2h2v-2z"/>
+                </svg>
+                Щоденні завдання
+            </button>
+            <button onclick="showSection('raid')" id="raid-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm-2-10h4v6h2v2h-6v-2h2v-4h-2v-2z"/>
+                </svg>
+                Грабіж
+            </button>
+            <button onclick="showSection('secrets')" id="secrets-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#B0BEC5">
+                    <path d="M12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-8-8 8 8 0 0 1 8-8 8 8 0 0 1 8 8 8 8 0 0 1-8 8zm0-12a4 4 0 0 0-4 4h2a2 2 0 0 1 2-2v2h2v-2a4 4 0 0 0-2-3.464V8z"/>
+                </svg>
+                Секрети
+            </button>
+        </div>
+        <div class="main-content">
+            <h2>Щоденний фокус</h2>
+            <div id="focus-content">
+                <div class="day-buttons">
+                    <button onclick="showFocus('monday')" id="monday-btn" class="active">Пн</button>
+                    <button onclick="showFocus('tuesday')" id="tuesday-btn">Вт</button>
+                    <button onclick="showFocus('wednesday')" id="wednesday-btn">Ср</button>
+                    <button onclick="showFocus('thursday')" id="thursday-btn">Чт</button>
+                    <button onclick="showFocus('friday')" id="friday-btn">Пт</button>
+                    <button onclick="showFocus('saturday')" id="saturday-btn">Сб</button>
+                    <button onclick="showFocus('sunday')" id="sunday-btn">Нд</button>
+                </div>
+                <div id="day-content">
+                    <h3>День 1 - Радарна підготовка</h3>
+                    <ul>
+                        <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                        <li>Збираємо ресурси на карті</li>
+                        <li>Використовуємо досвід героя для дейліку</li>
+                        <li>Виконуємо завдання радару</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="image-modal" class="modal">
+        <span id="close-modal" class="close-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#E0E0E0">
+                <path d="M18 6L6 18M6 6l12 12" stroke="#E0E0E0" stroke-width="2"/>
+            </svg>
+        </span>
+        <img id="modal-image" src="" alt="Повноекранне зображення">
+    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        function showSection(section) {
+            const focusContent = document.getElementById('focus-content');
+            const buttons = document.querySelectorAll('.sidebar button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(section + '-btn').classList.add('active');
+
+            let contentHTML = '';
+            switch (section) {
+                case 'daily':
+                    contentHTML = `
+                        <div class="day-buttons">
+                            <button onclick="showFocus('monday')" id="monday-btn" class="active">Пн</button>
+                            <button onclick="showFocus('tuesday')" id="tuesday-btn">Вт</button>
+                            <button onclick="showFocus('wednesday')" id="wednesday-btn">Ср</button>
+                            <button onclick="showFocus('thursday')" id="thursday-btn">Чт</button>
+                            <button onclick="showFocus('friday')" id="friday-btn">Пт</button>
+                            <button onclick="showFocus('saturday')" id="saturday-btn">Сб</button>
+                            <button onclick="showFocus('sunday')" id="sunday-btn">Нд</button>
+                        </div>
+                        <div id="day-content">
+                            <h3>День 1 - Радарна підготовка</h3>
+                            <ul>
+                                <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                                <li>Збираємо ресурси на карті</li>
+                                <li>Використовуємо досвід героя для дейліку</li>
+                                <li>Виконуємо завдання радару</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'raid':
+                    contentHTML = `
+                        <h3>Грабіж</h3>
+                        <p>Хлопці, нагадаю, не можна грабувати наш сервер. Це стосується вантажівок і секретних завдань. За це буде покарання, воно вам треба? Тим більше, що насправді немає нічого складного зайти на інший і грабувати там.</p>
+                        <h4>Коротка інструкція</h4>
+                        <ul>
+                            <li>Заходьте у вантажівки</li>
+                            <li>Зверху справа ставте галочку "фільтрувати свій сервер"</li>
+                            <li>Вибирайте будь-яку вантажівку</li>
+                            <li>Натискайте "ограбити"</li>
+                            <li>Ууаа, ви на чужому сервері і можете там грабувати секретні завдання та вантажівки!</li>
+                        </ul>
+                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів" onclick="openModal(this.src)">
+                    `;
+                    break;
+                case 'secrets':
+                    contentHTML = `
+                        <h3>Секрети</h3>
+                        <p>Хлопці, нагадаю, не можна грабувати наш сервер. Це стосується вантажівок і секретних завдань. За це буде покарання, воно вам треба? Тим більше, що насправді немає нічого складного зайти на інший і грабувати там.</p>
+                        <h4>Коротка інструкція</h4>
+                        <ul>
+                            <li>Заходьте у вантажівки</li>
+                            <li>Зверху справа ставте галочку "фільтрувати свій сервер"</li>
+                            <li>Вибирайте будь-яку вантажівку</li>
+                            <li>Натискайте "ограбити"</li>
+                            <li>Ууаа, ви на чужому сервері і можете там грабувати секретні завдання та вантажівки!</li>
+                        </ul>
+                        <img src="https://i.ibb.co/JwN8kwzt/image.jpg" alt="Інструкція з грабіжів" onclick="openModal(this.src)">
+                    `;
+                    break;
+            }
+            focusContent.innerHTML = contentHTML;
+        }
+
+        function showFocus(day) {
+            const dayContent = document.getElementById('day-content');
+            const dayButtons = document.querySelectorAll('.day-buttons button');
+            dayButtons.forEach(btn => btn.classList.remove('active'));
+            document.getElementById(day + '-btn').classList.add('active');
+
+            let focusHTML = '';
+            switch (day) {
+                case 'monday':
+                    focusHTML = `
+                        <h3>День 1 - Радарна підготовка</h3>
+                        <ul>
+                            <li>Прокачка дрону: Використовуємо досвід дрону, шестерні та запчастини дрону. Для більшого профіту рекомендую поєднати це з щоденним завданням на дрон.</li>
+                            <li>Збираємо ресурси на карті</li>
+                            <li>Використовуємо досвід героя для дейліку</li>
+                            <li>Виконуємо завдання радару</li>
+                        </ul>
+                    `;
+                    break;
+                case 'tuesday':
+                    focusHTML = `
+                        <h3>День будівництва</h3>
+                        <ul>
+                            <li>Закінчуємо будівництво будівель, розпаковуємо пакунки будівель, які протягом тижня будували. Рекомендую поєднати з щоденним завданням.</li>
+                            <li>Наймаємо виживших у таверні</li>
+                            <li>Готуємо радар для середи: Виконуємо завдання радару, але не забираємо (Залишаємо з червоною крапкою). Також рекомендую, щоб на 22:00 у вас було приблизно 25 завдань на радарі в лівому куточку висіло.</li>
+                            <li>Використовуємо по максимуму прискорення будівництва. Рекомендую також стати на міністра будівництва і в цей період швиденько побудуватися.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'wednesday':
+                    focusHTML = `
+                        <h3>День досліджень</h3>
+                        <ul>
+                            <li>Забираємо всі завдання радара.</li>
+                            <li>Відкриваємо скрині з компонентами дрону.</li>
+                            <li>Закінчуємо великі дослідження, використовуємо прискорення для технологій, які вимагають медалі честі.</li>
+                            <li>Завдання радару збираємо тільки з точками (виконані). Виконання нових завдань краще поєднати з щоденним завданням на дрона, щоб швидко витратити витривалість.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'thursday':
+                    focusHTML = `
+                        <h3>День прокачування героїв</h3>
+                        <ul>
+                            <li>Качаємо героїв: піднімаємо рівень, наймаємо в таверні героїв, використовуємо уламки та медалі навички.</li>
+                            <li>Готуємо радар для п'ятниці: виконуємо завдання, але не забираємо.</li>
+                            <li>Прокачку героїв краще поєднати з щоденним завданням.</li>
+                            <li>На радарі о 22:00 повинно бути приблизно 24 завдання не виконаних.</li>
+                        </ul>
+                    `;
+                    break;
+                case 'friday':
+                    focusHTML = `
+                        <h3>День прокачування юнітів</h3>
+                        <ul>
+                            <li>Забираємо всі завдання радара.</li>
+                            <li>Якщо залишилися ресурси, будуємо будівлі та вивчаємо технології.</li>
+                            <li>Тренуємо юнітів по максимуму.</li>
+                            <li>Наприкінці дня обов’язково одягаємо щит!</li>
+                        </ul>
+                    `;
+                    break;
+                case 'saturday':
+                    focusHTML = `
+                        <h3>Субота: Оновлення бази</h3>
+                        <ul>
+                            <li>Оновлення будівель</li>
+                            <li>Дослідження нових технологій</li>
+                        </ul>
+                    `;
+                    break;
+                case 'sunday':
+                    focusHTML = `
+                        <h3>Неділя: Відпочинок та планування</h3>
+                        <ul>
+                            <li>Перегляд прогресу</li>
+                            <li>Планування на наступний тиждень</li>
+                        </ul>
+                    `;
+                    break;
+            }
+            dayContent.innerHTML = focusHTML;
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = src;
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.style.display = 'none';
+        }
+
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+    </script>
+</body>
+</html>
